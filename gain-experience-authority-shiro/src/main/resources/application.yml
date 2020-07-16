@@ -1,0 +1,12 @@
+shiro:
+  web:
+    enabled: true
+  loginUrl: /login
+spring:
+  freemarker:
+    suffix: .ftl
+    template-loader-path: classpath:/templates/
+    settings:
+      classic_compatible: true #处理空值
+server:
+  port: 8081
