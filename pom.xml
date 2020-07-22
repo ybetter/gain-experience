@@ -7,6 +7,7 @@
         <module>gain-experience-attachments</module>
         <module>gain-experience-authority-shiro</module>
         <module>gain-experience-authority-security</module>
+        <module>gain-experience-data</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

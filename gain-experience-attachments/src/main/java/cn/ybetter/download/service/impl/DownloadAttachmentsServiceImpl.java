@@ -3,7 +3,10 @@ package cn.ybetter.download.service.impl;
 import cn.ybetter.download.dao.DownloadAttachmentsDao;
 import cn.ybetter.download.entity.Hero;
 import cn.ybetter.download.service.DownloadAttachmentsService;
+import cn.ybetter.download.service.GetUserInfoService;
 import com.alibaba.excel.EasyExcel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,13 +28,18 @@ public class DownloadAttachmentsServiceImpl implements DownloadAttachmentsServic
     @Resource
     private DownloadAttachmentsDao downloadAttachmentsDao;
 
+    @Qualifier("getUserInfoServiceImpl")
+    @Autowired
+    private GetUserInfoService getUserInfoService;
+
     /**
      * 生成excel
      */
     @Override
     public void generateExcel() throws Exception {
         try {
-            List<Hero> list = downloadAttachmentsDao.queryAll(new Hero());
+            //List<Hero> list = downloadAttachmentsDao.queryAll(new Hero());
+            List<Hero> list = this.getUserInfoService.queryAllUserInfo();
             String fileName = downloadPath + "write" +System.currentTimeMillis() + ".xlsx";
             EasyExcel.write(fileName, Hero.class).sheet("模板").doWrite(list);
         } catch (Exception e) {
