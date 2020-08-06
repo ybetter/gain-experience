@@ -1,5 +1,6 @@
 server:
   port: 8084
+
 spring:
   application:
     name: gain-experience-attachments
@@ -8,6 +9,17 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    jedis:
+      pool:
+        max-idle: 8
+        max-active: 8
+        min-idle: 0
+    timeout: 100ms
+
 eureka:
   client:
     service-url:
@@ -19,3 +31,15 @@ mybatis:
 feign:
   hystrix:
     enabled: true
+security:
+  oauth2:
+    client:
+      client-id: client_id
+      client-secret: 123456
+      user-authorization-uri: http://GAIN-EXPERIENCE-AUTHORITY-SECURITY/oauth/authorize
+      access-token-uri: http://GAIN-EXPERIENCE-AUTHORITY-SECURITY/oauth/token
+#    resource:
+#      id: client_id
+#      user-info-uri: user-info
+    authorization:
+      check-token-access: http://GAIN-EXPERIENCE-AUTHORITY-SECURITY/oauth/check_token
