@@ -1,52 +1,52 @@
 package cn.ybetter.download.Config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
+import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 @Configuration
-@EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    @Value("${security.oauth2.client.client-id}")
-    private String clientId;
-
-    @Value("${security.oauth2.client.client-secret}")
-    private String secret;
-
-    @Value("${security.oauth2.authorization.check-token-access}")
-    private String checkTokenEndpointUrl;
-
     @Autowired
-    private RedisConnectionFactory redisConnectionFactory;
+    private TokenStore tokenStore;
 
-    @Bean
-    public TokenStore redisTokenStore() {
-        return new RedisTokenStore(redisConnectionFactory);
-    }
-
-    @Bean
-    public RemoteTokenServices tokenServices() {
-        RemoteTokenServices tokenServices = new RemoteTokenServices();
-        tokenServices.setClientId(clientId);
-        tokenServices.setClientSecret(secret);
-        tokenServices.setCheckTokenEndpointUrl(checkTokenEndpointUrl);
-        return tokenServices;
-    }
+    public static final String RESOURCE_ID = "res1";
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.tokenServices(tokenServices());
+        resources.resourceId(RESOURCE_ID)
+//                .tokenServices(resourceServerTokenServices())
+                .tokenStore(tokenStore)
+                .stateless(true);
     }
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .antMatchers("/**").access("#oauth2.hasScope('all')")
+                .and().csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
+
+    // 资源服务令牌解析服务
+    /*@Bean
+    public ResourceServerTokenServices resourceServerTokenServices() {
+        // 使用远程服务请求服务器校验token，必须指定校验token的url、client_id、client_secret
+        RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
+        remoteTokenServices.setCheckTokenEndpointUrl("http://localhost:8082/oauth/check_token");
+        remoteTokenServices.setClientId("c1");
+        remoteTokenServices.setClientSecret("secret");
+        return remoteTokenServices;
+    }*/
 
 }

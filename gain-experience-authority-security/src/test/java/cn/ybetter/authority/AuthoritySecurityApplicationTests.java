@@ -10,7 +10,7 @@ class AuthoritySecurityApplicationTests {
 
     @Test
     void contextLoads() {
-        System.out.println("加密后的密码：" + new BCryptPasswordEncoder().encode("123456"));
+        System.out.println("加密后的密码：" + new BCryptPasswordEncoder().encode("secret"));
     }
 
 }

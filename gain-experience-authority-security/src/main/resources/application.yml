@@ -13,20 +13,18 @@ spring:
       idle-timeout: 600000
       max-lifetime: 1800000
       maximum-pool-size: 9
-  redis:
-    database: 0
-    host: localhost
-    port: 6379
-    jedis:
-      pool:
-        max-active: 8
-        max-idle: 8
-        min-idle: 0
-    timeout: 100ms
-  security:
-    user:
-      name: anumbrella
-      password: 123
+  main:
+    allow-bean-definition-overriding: true
+#  redis:
+#    database: 0
+#    host: localhost
+#    port: 6379
+#    jedis:
+#      pool:
+#        max-active: 8
+#        max-idle: 8
+#        min-idle: 0
+#    timeout: 100ms
 
 eureka:
   client:

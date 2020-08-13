@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("downloadAttachments")
+@RequestMapping("attachments")
 public class DownloadAttachmentsController {
 
     /**
@@ -33,7 +33,7 @@ public class DownloadAttachmentsController {
      * 生成excel
      */
     @GetMapping("generateExcel")
-//    @PreAuthorize("hasAnyRole({'ROLE_ADMIN'})")
+    @PreAuthorize("hasAuthority('p2')")
     public Map<String, Object> selectOne() throws Exception {
         Map<String, Object> data = new HashMap<>();
         try {

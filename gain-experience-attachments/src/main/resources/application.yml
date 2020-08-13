@@ -31,15 +31,4 @@ mybatis:
 feign:
   hystrix:
     enabled: true
-security:
-  oauth2:
-    client:
-      client-id: client_id
-      client-secret: 123456
-      user-authorization-uri: http://GAIN-EXPERIENCE-AUTHORITY-SECURITY/oauth/authorize
-      access-token-uri: http://GAIN-EXPERIENCE-AUTHORITY-SECURITY/oauth/token
-#    resource:
-#      id: client_id
-#      user-info-uri: user-info
-    authorization:
-      check-token-access: http://GAIN-EXPERIENCE-AUTHORITY-SECURITY/oauth/check_token
+
